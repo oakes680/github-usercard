@@ -41,46 +41,39 @@ const cards = document.querySelector('.cards')
 
 //const followersArray = ['oakes680', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell', 'andybolos'];
 //console.log(followersArray)
-let dustinArray = []
-//console.log(dustinArray)
-//console.log(dustinArray.length)
+// let dustinArray = []
+// console.log(dustinArray)
+// console.log(dustinArray.length)
 
-axios.get('https://api.github.com/users/dustinmyers/followers')
+// axios.get('https://api.github.com/users/dustinmyers/followers')
+//   .then(response => {
+//     for (let i = 0; i < response.data.length; i++) {
+//       dustinArray.push(response.data[i].login)
+//     }
+//     dustinArray.forEach((item) => {
+//       axios.get(`https://api.github.com/users/${item}`)
+//         .then(response => {
+//           const myInfo = response.data
+//           //console.log(item)
+//           cards.appendChild(cardMaker(myInfo))  
+
+//           //console.log(item)
+//         })
+//     })
+//   })
+
+axios.get("https://api.github.com/users/dustinmyers/followers")
   .then(response => {
-    for (let i = 0; i < response.data.length; i++) {
-      dustinArray.push(response.data[i].login)
-    }
-    dustinArray.forEach((item) => {
-      axios.get(`https://api.github.com/users/${item}`)
-        .then(response => {
-          const myInfo = response.data
-          //console.log(item)
-          cards.appendChild(cardMaker(myInfo))  
-          
-          //console.log(item)
+    console.log(response.data)
+    response.data.forEach(item => {
+      axios.get(`https://api.github.com/users/${item.login}`)
+        .then(thisResponse => {  
+          console.log(thisResponse)      
+          cards.appendChild(cardMaker(thisResponse.data))
         })
     })
   })
 
-axios.get("https://api.github.com/users/alexandercsierra/followers")
-  .then(obj => {
-    console.log(obj)
-    let otherfollowersArray = obj.data;
-    console.log(obj.data)
-    return otherfollowersArray;})
-  
-  .then(arr => arr.map(user => {
-    //console.log(arr)
-      let profileURL = "https://api.github.com/users/" + user.login;
-      axios.get(profileURL)
-      .then(response => {
-        let container = document.querySelector(".cards");
-        container.appendChild(cardMaker(response.data));
-      })
-    })
-    
-  )
-  .catch(error => console.log(error))
 
 
 
@@ -108,7 +101,7 @@ axios.get("https://api.github.com/users/alexandercsierra/followers")
 // });
 
 function cardMaker(gitH) {
- 
+
   const divCard = document.createElement('div')
   const imgUser = document.createElement('img')
   const divInfo = document.createElement('div')
@@ -120,7 +113,7 @@ function cardMaker(gitH) {
   const pFollowing = document.createElement('p')
   const pBio = document.createElement('p')
   const calendar = document.createElement('div')
- 
+
 
   divCard.classList.add('card')
   divInfo.classList.add('card-info')
@@ -128,7 +121,7 @@ function cardMaker(gitH) {
   pUser.classList.add('username')
   calendar.classList.add('calendar')
 
-  
+
 
   imgUser.src = gitH.avatar_url
   h3Name.textContent = `Name: ${gitH.name}`
@@ -140,7 +133,7 @@ function cardMaker(gitH) {
   pBio.textContent = `Bio: ${gitH.bio}`
 
 
-  
+
 
   divCard.appendChild(imgUser);
   divCard.appendChild(divInfo)
@@ -153,9 +146,9 @@ function cardMaker(gitH) {
   divInfo.appendChild(pBio)
   divInfo.appendChild(calendar)
 
-   GitHubCalendar(calendar, gitH.login, {
+  GitHubCalendar(calendar, gitH.login, {
     responsive: true
-   });
+  });
 
   return divCard
 
@@ -169,3 +162,18 @@ function cardMaker(gitH) {
   luishrd
   bigknell
 */
+
+
+
+
+// axios.get("https://api.github.com/users/Nsandomeno/followers")
+//   .then(function (response) {
+//     for (item of response.data) {
+//       //console.log(item.login);
+//       axios.get("http://api.github.com/users/" + item.login)
+//         .then(function (response) {
+//           const person = response.data
+//           cards.appendChild(cardMaker(person));
+//         })
+//         }
+//         })
